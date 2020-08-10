@@ -1,0 +1,39 @@
+<div class="content">
+    <app-nav></app-nav>
+    <div class="pcard">
+        <p-card>
+            <h3>View Batch Metrics</h3>
+            <div *ngIf="selectedBatch.name!==''">
+                <p><b>Batch Name: </b>{{ selectedBatch.name }}</p>
+                <p><b>O.G.: </b>{{ selectedBatch.OG }}</p>
+                <p><b>Created: </b>{{ selectedBatch['date'] }}</p>
+                <!--<div *ngFor="let line of oneMetric">{{ line }}</div>-->
+                
+
+            </div>
+            <div class="selectBoxes">
+                <div class="selectBoxes" *ngIf="selectedBatch.name===''">
+
+                    <select #dataType [(ngModel)]="searchData" (change)="setData()">
+                        <option>Select</option>
+                        <option *ngFor="let type of dataTypes | filterUnique">{{ type }}</option>
+                    </select>
+
+                </div>
+                <div class="selectBoxes" *ngIf="searchData!=='Select'">
+
+                    <select #searchy [(ngModel)]="searchOption" (change)="setSearch(searchy.value)">
+                        <option>Select</option>
+                        <option *ngFor="let query of queries | filterUnique">{{ query }}</option>
+                    </select>
+
+                </div>
+            </div>
+            <div *ngIf="isData()">
+            <p-chart type="line" [data]="sgData"></p-chart>
+            <p-chart type="line" [data]="tempData"></p-chart>
+            </div>
+
+        </p-card>
+    </div>
+</div>

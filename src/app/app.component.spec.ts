@@ -26,10 +26,12 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('brewtool');
   });
 
-  it('should render title', () => {
+  it('should verify sidebar', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('brewtool app is running!');
+    expect(compiled.querySelector('.content h2').textContent).toContain('Brew Tool Options');
   });
+
+
 });

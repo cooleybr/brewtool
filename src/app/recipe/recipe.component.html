@@ -1,0 +1,197 @@
+<div class="content">
+  <app-nav></app-nav>
+
+  <div class="pcard">
+    <p-card>
+      <p-header>
+      </p-header>
+      <div class="table">
+        <h3>Recipes</h3>
+        <p-table [value]="recipes">
+          <ng-template pTemplate="header">
+            <tr>
+              <th colspan="1">Title</th>
+              <th colspan="3">Description</th>
+              <th colspan="1">Actions</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-recipe>
+            <tr>
+              <td colspan="1">{{recipe.title}}</td>
+              <td colspan="3">{{recipe.description}}</td>
+              <td colspan="1" style="text-align: center;">
+                <i class="pi pi-eye" title="View" style="font-size: 1.25rem" (click)="getRecipe(recipe['_id']['$oid'])"></i>
+                <i class="pi pi-copy" title="Copy" style="font-size: 1.25rem" (click)="cloneRecipe(recipe['_id']['$oid'])"></i>
+                <i class="pi pi-trash" title="Delete" style="font-size: 1.25rem" (click)="deleteRecipe(recipe['_id']['$oid'])"></i>
+                <i class="pi pi-play" title="Make" style="font-size: 1.25rem" (click)="newBatch(recipe['_id']['$oid'])"></i>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <h3 style="float:right">
+          Add Recipe <i class="pi pi-plus" title="Add" (click)="addRecipe()"></i>
+          </h3>
+      </div>
+      <p></p>
+      <div class="p-grid">
+        <div class="p-col-6">
+          <div class="table">
+            <h3>Grains</h3>
+            <p-table [value]="grains" [autoLayout]="true">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-grain>
+                <tr>
+                  <td>{{grain.name}}</td>
+                  <td>{{grain.description}}</td>
+                  <td  style="text-align: center;">
+                    <i class="pi pi-trash" title="Delete" (click)="removeGrain(grain['_id']['$oid'])" style="font-size: 1.25rem"></i>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+            <h3 style="float:right">
+              Add Grain <i class="pi pi-plus" title="Add" (click)="grainList=!grainList"></i>
+            </h3>
+          </div>
+        </div>
+        <div class="p-col-6">
+          <div class="table">
+            <h3>Hops</h3>
+            <p-table [value]="hops" [autoLayout]="true">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Alpha</th>
+                  <th>Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-hop>
+                <tr>
+                  <td>{{hop.name}}</td>
+                  <td>{{hop.description}}</td>
+                  <td>{{ hop.alpha }}</td>
+                  <td  style="text-align: center;">
+                    <i class="pi pi-trash" title="Delete" (click)="removeHop(hop['_id']['$oid'])" style="font-size: 1.25rem"></i>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+            <h3 style="float:right">
+               Add Hops <i class="pi pi-plus" title="Add" (click)="hopList=!hopList"></i>
+               </h3>
+          </div>
+        </div>
+      </div>
+
+
+
+      <p-footer>
+
+      </p-footer>
+    </p-card>
+  </div>
+</div>
+
+<p-dialog header="Recipe Details" [style]="{width: '40vw'}" [(visible)]="recipeSelected">
+  <div class="description">
+    <h3 class="recModal">Name: </h3>
+    {{ recipeDetails['title'] }}
+    <p></p>
+    <h3 class="recModal">Description: </h3>
+    {{ recipeDetails['description'] }}
+    <p></p>
+      <h3 class="recModal">Grains:</h3>
+    <div class="recModList" *ngFor="let g of recipeDetails['grains']">
+      {{ g['quantity'] }} lb {{ g['name'] }}
+    </div>
+    <h3 class="recModal">Hops:</h3>
+    <div class="recModList" *ngFor="let k of recipeDetails['hops'] | keyvalue">
+      {{ k.value['quantity'] }} oz {{ k.value['name'] }}
+    </div>
+    <p></p>
+    <h3 class="recModal">Instructions: </h3>
+    {{ recipeDetails['instructions'] }}
+    <p></p>
+    <div class="options">
+      <button pButton label="Delete" (click)="deleteRecipe(recipeDetails['_id']['$oid'])"></button>
+      <button pButton label="New Batch" (click)="newBatch(recipeDetails['_id']['$oid'])"></button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog header="Add/Remove Grains" [(visible)]="grainList">
+
+  <p><b>Name:</b><input type="text" #newGrainTitle /> </p>
+  <p><b>Description:</b><input type="text" #newGrainDescription /></p> 
+  <button pButton label="Add" (click)="addGrain(newGrainTitle.value,newGrainDescription.value)"></button>
+</p-dialog>
+
+<p-dialog header="Add/Remove Hops" [(visible)]="hopList">
+  <p><b>Name:</b><input type="text" #newHopTitle /> </p>
+  <p><b>Description:</b><input type="text" #newHopDescription /></p>
+  <p><b>Alpha:</b><input type="text" #newHopAlpha /> </p>
+  <button pButton label="Add" (click)="addHop(newHopTitle.value, newHopDescription.value,newHopAlpha.value)"></button>
+</p-dialog>
+
+<p-dialog header={{recipeModalTitle}} [(visible)]="recipeModal">
+  <div class="rec-modal">
+    <table>
+      <tr>
+        <td>Name:</td>
+        <td><input [(ngModel)]="selectedRecipe['title']" /></td>
+      </tr>
+      <tr>
+        <td>Description:</td>
+        <td><textarea rows="3" cols="50" [(ngModel)]="selectedRecipe['description']"></textarea></td>
+      </tr>
+      <tr>
+        <td>Instructions:</td>
+        <td><textarea rows="10" cols="50" [(ngModel)]="selectedRecipe['instructions']"></textarea></td>
+      </tr>
+      <tr>
+        <td>Original Gravity:</td>
+        <td><input [(ngModel)]="selectedRecipe['OG']" /></td>
+      </tr>
+      <tr class="boxed">
+        <td><button pButton label="Grains" (click)="viewGrainList()"></button></td>
+        <td><span *ngFor="let c of selectedRecipe['grains']">
+            <p>{{c.name}} <input [(ngModel)]="c.quantity"></p>
+          </span></td>
+      </tr>
+      <tr class="boxed">
+        <td><button pButton label="Hops" (click)="viewHopList()"></button></td>
+        <td><span *ngFor="let c of selectedRecipe['hops']">
+            <p>{{c.name}}<input [(ngModel)]="c.quantity"></p>
+          </span></td>
+      </tr>
+    </table>
+
+    <p><button pButton label="Save" (click)="saveRecipe()"></button></p>
+  </div>
+
+</p-dialog>
+
+<p-dialog header="Add Hops" position="right" [(visible)]="hopModal">
+  <p-listbox [options]="hops" [(ngModel)]="selectedRecipe['hops']" multiple="false" checkbox="checkbox" filter="filter"
+    optionLabel="name">
+    <p-header>
+      Hops
+    </p-header>
+  </p-listbox>
+</p-dialog>
+
+<p-dialog header="Add Grains" position="right" [(visible)]="grainModal">
+  <p-listbox [options]="grains" [(ngModel)]="selectedRecipe['grains']" multiple="multiple" checkbox="checkbox" filter="filter"
+    optionLabel="name">
+    <p-header>
+      Grains
+    </p-header>
+  </p-listbox>
+</p-dialog>

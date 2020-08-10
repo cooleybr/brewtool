@@ -1,0 +1,85 @@
+h3 {
+    margin-top:0;
+    padding-top:1em;
+    margin-left:.5em;
+}
+.content {
+    background-color:rgba(0,0,0,.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+}
+
+.pcard {
+    width:90%;
+    margin:auto;
+    margin-top:1em;
+}
+
+button{
+    background-color: rgba(0,0,0);
+    margin: 1em;
+    font-size:.75em;
+}
+
+.description{
+    overflow-wrap: break-word;
+}
+
+.options{
+    float:right;
+}
+
+select{
+    /**background-color: rgba(0,0,0);**/
+    margin: 1em;
+    font-size:.75em;
+}
+
+input {
+    float:right;
+    margin-left:1em;
+}
+
+table {
+    border-collapse:collapse;
+} 
+
+tr.boxed {
+    border: 1px solid white;
+    margin-top:1em;
+    padding:1em;
+}
+
+p {
+    padding:.5em;
+    display:block;
+    margin-bottom:1em;
+    clear:both;
+}
+
+span input{
+    float:right;
+}
+
+textarea {
+    float:right;
+    margin-left:1em;
+    resize:none;
+}
+
+h2 {
+    display:inline-block;
+}
+
+.batchModal {
+    margin-left:1em;
+}
+
+i {
+    margin-left:.5em;
+    margin-right:.5em;
+  }

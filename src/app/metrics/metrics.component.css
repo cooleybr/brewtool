@@ -1,0 +1,24 @@
+.readings-button{
+    background-color: rgba(0,0,0,.3);
+}
+
+.content {
+    background-color:rgba(0,0,0,.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+}
+
+.pcard {
+    width:90%;
+    margin:auto;
+    margin-top:1em;
+}
+
+.selectBoxes {
+  display:inline-block;
+  margin-left: 1em;
+}
