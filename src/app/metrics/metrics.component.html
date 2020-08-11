@@ -8,7 +8,7 @@
                 <p><b>O.G.: </b>{{ selectedBatch.OG }}</p>
                 <p><b>Created: </b>{{ selectedBatch['date'] }}</p>
                 <!--<div *ngFor="let line of oneMetric">{{ line }}</div>-->
-                
+
 
             </div>
             <div class="selectBoxes">
@@ -30,8 +30,14 @@
                 </div>
             </div>
             <div *ngIf="isData()">
-            <p-chart type="line" [data]="sgData"></p-chart>
-            <p-chart type="line" [data]="tempData"></p-chart>
+                <div class="selectBoxes">
+                    <h3>Specific Gravity</h3>
+                    <p-chart type="line" [data]="sgData" width="40vw" height="25vw" [responsive]="true"></p-chart>
+                </div>
+                <div class="selectBoxes">
+                    <h3>Temperature</h3>
+                    <p-chart type="line" [data]="tempData" width="40vw" height="25vw" [responsive]="true"></p-chart>
+                </div>
             </div>
 
         </p-card>
