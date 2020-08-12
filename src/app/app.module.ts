@@ -14,12 +14,12 @@ import { CardModule } from 'primeng/card';
 import { MenubarModule } from 'primeng/menubar';
 import { TableModule } from 'primeng/table';
 import { ListboxModule } from 'primeng/listbox';
-import {FileUploadModule} from 'primeng/fileupload';
-import {ChartModule} from 'primeng/chart';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ChartModule } from 'primeng/chart';
 
 import { RecipeComponent } from './recipe/recipe.component';
 import { BatchesComponent } from './batches/batches.component';
-import { MetricsComponent,FilterPipe } from './metrics/metrics.component';
+import { MetricsComponent, FilterPipe } from './metrics/metrics.component';
 
 import { DataService } from './services/data.service';
 import { NavComponent } from './nav/nav.component';

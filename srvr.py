@@ -17,6 +17,7 @@ recipes = db.recipes
 batches = db.batches
 grains = db.grains
 hops = db.hops
+yeast = db.yeast
 metrics = db.metrics
 
 @app.route("/", methods=['GET'])
@@ -57,6 +58,14 @@ def getHops():
     print('failed to get hops')
   return(dumps(data))
 
+@app.route("/get_yeast")
+def getYeast():
+  try:
+    data = yeast.find()
+  except:
+    print('failed to get yeast')
+  return(dumps(data))
+
 @app.route('/add_recipe', methods=['POST'])
 def addRecipe():
   data = request.data
@@ -92,6 +101,16 @@ def addHops():
   data = request.data
   try:
     post_id = hops.insert_one(json.loads(data)).inserted_id
+    return(jsonify({'Status':'success'}))
+  except:
+    print('failed to post')
+    return(jsonify({'Status':'failed'}))
+
+@app.route('/add_yeast', methods=['POST'])
+def addYeast():
+  data = request.data
+  try:
+    post_id = yeast.insert_one(json.loads(data)).inserted_id
     return(jsonify({'Status':'success'}))
   except:
     print('failed to post')
@@ -136,6 +155,17 @@ def deleteHops():
     payload = {'_id': ObjectId(id) }
     try:
       hops.delete_one(payload)
+      result = {'status':'success'}
+    except:
+      result = {'status':'failure'}
+    return(jsonify(result))
+
+@app.route('/delete_yeast', methods=['GET'])
+def deleteYeast():
+    id = request.args.get('id')
+    payload = {'_id': ObjectId(id) }
+    try:
+      yeast.delete_one(payload)
       result = {'status':'success'}
     except:
       result = {'status':'failure'}

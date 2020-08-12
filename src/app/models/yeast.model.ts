@@ -1,5 +1,5 @@
-export class Grain {
+export class Yeast {
     name: string;
     description: string;
-    quantity: number;
+    quantity: string;
 }

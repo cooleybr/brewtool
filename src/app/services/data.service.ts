@@ -36,6 +36,15 @@ export class DataService {
     }
   }
 
+  getYeast() {
+    try {
+      return this.http.get('http://localhost:5000/get_yeast');
+    }
+    catch (e) {
+      return of([]);
+    }
+  }
+
   getHops() {
     try {
       return this.http.get('http://localhost:5000/get_hops');
@@ -49,12 +58,20 @@ export class DataService {
     return this.http.post('http://localhost:5000/add_grains', grain);
   }
 
+  addYeast(yeast) {
+    return this.http.post('http://localhost:5000/add_yeast', yeast);
+  }
+
   addHops(hop) {
     return this.http.post('http://localhost:5000/add_hops', hop);
   }
 
   deleteGrains(id) {
     return this.http.get('http://localhost:5000/delete_grains?id=' + id);
+  }
+
+  deleteYeast(id) {
+    return this.http.get('http://localhost:5000/delete_yeast?id=' + id);
   }
 
   deleteHops(id) {

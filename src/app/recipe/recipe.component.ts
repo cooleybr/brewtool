@@ -4,6 +4,7 @@ import { Recipe } from '../models/recipe.model';
 import { Router, ChildActivationStart } from '@angular/router';
 import { Hop } from '../models/hop.model';
 import { Grain } from '../models/grain.model';
+import { Yeast } from '../models/yeast.model';
 
 @Component({
   selector: 'app-recipe',
@@ -14,11 +15,14 @@ export class RecipeComponent {
 
   recipes = [];
   grainList = false;
+  yeastList = false;
+  yeast: Yeast[];
   recipeModalTitle = 'Add a new recipe';
   hopList = false;
   selectedRecipe: Recipe = new Recipe();
   recipeDetails = {};
   recipeSelected = false;
+  yeastModal = false;
   recipeModal = false;
   grainModal = false;
   grains: Grain[] = [];
@@ -39,6 +43,10 @@ export class RecipeComponent {
     })
     this.d.getHops().subscribe(x => {
       this.hops = x as Hop[];
+      this.clearOid();
+    })
+    this.d.getYeast().subscribe(x => {
+      this.yeast = x as Yeast[];
       this.clearOid();
     })
   }
@@ -76,14 +84,6 @@ export class RecipeComponent {
     }   
   }
 
-  viewHopList() {
-    this.hopModal = !this.hopModal;
-  }
-
-  viewGrainList() {
-    this.grainModal = !this.grainModal;
-  }
-
   saveRecipe() {
     delete this.selectedRecipe['_id']; 
     this.clearOid();
@@ -112,6 +112,20 @@ export class RecipeComponent {
     })
   }
 
+  resetYeast() {
+    this.d.getYeast().subscribe(x => {
+      this.yeast = x as Yeast[];
+    })
+  }
+
+  addYeast(name, description) {
+    const yeast = new Yeast();
+    yeast.name=name;
+    yeast.description=description;
+    this.d.addYeast(yeast).subscribe(x => this.resetYeast());
+    this.yeastList = !this.yeastList;
+  }
+
   addGrain(name, description) {
     const grain = new Grain();
     grain.name=name;
@@ -131,6 +145,10 @@ export class RecipeComponent {
 
   removeGrain(id) {
     this.d.deleteGrains(id).subscribe(x => this.resetGrains());
+  }
+
+  removeYeast(id) {
+    this.d.deleteYeast(id).subscribe(x => this.resetYeast());
   }
 
   removeHop(id) {
