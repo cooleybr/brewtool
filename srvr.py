@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
 import json
+import mysqldb
 from pymongo import MongoClient
 import datetime
 import pprint
@@ -24,6 +25,12 @@ metrics = db.metrics
 def home():
   if request.method == 'GET':
     return(jsonify({'Status':'Working'}))
+
+@app.route("/getData", methods=['GET'])
+def getData():
+  if request.method == 'GET':
+    data = mysqldb.getAll()
+    return(data)
 
 @app.route("/get_recipes")
 def getRecipes():
