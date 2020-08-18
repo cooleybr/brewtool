@@ -5,7 +5,7 @@ def getAll():
   data = {"grains":[],"hops":[],"yeasts":[]}
   try:
     mydb = mysql.connector.connect(
-      host="mysql_container",
+      host="brewtool_mysql",
       user="root",
       password="@WSXcde3@WSXcde3",
       database="brewtool"

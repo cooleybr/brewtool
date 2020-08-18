@@ -1,7 +1,7 @@
 #!/bin/bash
 
-docker stop api_container
-docker rm api_container
-docker build -t api-server .
-docker run -d --name api_container --network brewtool -p 5000:5000 api-server:latest
+docker stop brewtool_api
+docker rm brewtool_api
+docker build -t brewtool_api ./api/
+docker run -d --name brewtool_api --network $DOCKER_NETWORK -p 5000:5000 brewtool_api
 

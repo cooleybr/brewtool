@@ -9,18 +9,19 @@ export class DataService {
 
   recipes = {};
   batches = {};
+  url = 'http://brewtool_api:5000/';
 
   constructor(private http: HttpClient) { }
 
   getRecipes() {
-    this.http.get('http://localhost:5000/get_recipes').subscribe(x => {
+    this.http.get(this.url + 'get_recipes').subscribe(x => {
       for (let r of Object.keys(x)) {
        this.recipes[x[r]['_id']['$oid']] = x[r];
       }
     });
 
     try {
-      return this.http.get('http://localhost:5000/get_recipes');
+      return this.http.get(this.url + 'get_recipes');
     }
     catch (e) {
       return of([]);
@@ -29,7 +30,7 @@ export class DataService {
 
   getGrains() {
     try {
-      return this.http.get('http://localhost:5000/get_grains');
+      return this.http.get(this.url + 'get_grains');
     }
     catch (e) {
       return of([]);
@@ -38,7 +39,7 @@ export class DataService {
 
   getYeast() {
     try {
-      return this.http.get('http://localhost:5000/get_yeast');
+      return this.http.get(this.url + 'get_yeast');
     }
     catch (e) {
       return of([]);
@@ -47,7 +48,7 @@ export class DataService {
 
   getHops() {
     try {
-      return this.http.get('http://localhost:5000/get_hops');
+      return this.http.get(this.url + 'get_hops');
     }
     catch (e) {
       return of([]);
@@ -55,27 +56,27 @@ export class DataService {
   }
 
   addGrains(grain) {
-    return this.http.post('http://localhost:5000/add_grains', grain);
+    return this.http.post(this.url + 'add_grains', grain);
   }
 
   addYeast(yeast) {
-    return this.http.post('http://localhost:5000/add_yeast', yeast);
+    return this.http.post(this.url + 'add_yeast', yeast);
   }
 
   addHops(hop) {
-    return this.http.post('http://localhost:5000/add_hops', hop);
+    return this.http.post(this.url + 'add_hops', hop);
   }
 
   deleteGrains(id) {
-    return this.http.get('http://localhost:5000/delete_grains?id=' + id);
+    return this.http.get(this.url + 'delete_grains?id=' + id);
   }
 
   deleteYeast(id) {
-    return this.http.get('http://localhost:5000/delete_yeast?id=' + id);
+    return this.http.get(this.url + 'delete_yeast?id=' + id);
   }
 
   deleteHops(id) {
-    return this.http.get('http://localhost:5000/delete_hops?id=' + id);
+    return this.http.get(this.url + 'delete_hops?id=' + id);
   }
 
   getRecipe(id) {
@@ -83,25 +84,25 @@ export class DataService {
   }
 
   addRecipe(recipe) {
-    return this.http.post('http://localhost:5000/add_recipe', recipe);
+    return this.http.post(this.url + 'add_recipe', recipe);
   }
 
   deleteRecipe(id) {
-    return this.http.get('http://localhost:5000/delete_recipe?id=' + id);
+    return this.http.get(this.url + 'delete_recipe?id=' + id);
   }
 
   deleteBatch(id) {
-    return this.http.get('http://localhost:5000/delete_batch?id=' + id);
+    return this.http.get(this.url + 'delete_batch?id=' + id);
   }
 
   getBatches() {
-    this.http.get('http://localhost:5000/get_batches').subscribe(x => {
+    this.http.get(this.url + 'get_batches').subscribe(x => {
       for (let r of Object.keys(x)) {
         this.batches[x[r]['_id']['$oid']] = x[r];
       }
     });
     try {
-      return this.http.get('http://localhost:5000/get_batches');
+      return this.http.get(this.url + 'get_batches');
     }
     catch (e) {
       return of([]);
@@ -114,15 +115,15 @@ export class DataService {
   }
 
   addBatch(batch) {
-    return this.http.post('http://localhost:5000/add_batch', batch);
+    return this.http.post(this.url + 'add_batch', batch);
   }
 
   getMetrics(){
-    return this.http.get("http://localhost:5000/getMetrics");
+    return this.http.get(this.url + 'getMetrics");
   }
 
   putMetrics(id,data){
     let datas = {id:id,data:data};
-    return this.http.post("http://localhost:5000/putMetrics", datas);
+    return this.http.post(this.url + 'putMetrics", datas);
   }
 }
