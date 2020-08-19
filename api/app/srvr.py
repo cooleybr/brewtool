@@ -12,7 +12,7 @@ from bson.objectid import ObjectId
 app = Flask(__name__)
 CORS(app)
 
-client = MongoClient('mongo_container',27017)
+client = MongoClient('brewtool_mongo',27017)
 db = client.brew_database
 recipes = db.recipes
 batches = db.batches

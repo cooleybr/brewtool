@@ -2,6 +2,7 @@
 
 echo "Name Docker Network:"
 read DOCKER_NETWORK
+export DOCKER_NETWORK=$DOCKER_NETWORK
 echo "Executing start scripts"
 client/start.sh
 echo "client Docker Building"

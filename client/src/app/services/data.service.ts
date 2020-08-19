@@ -9,7 +9,7 @@ export class DataService {
 
   recipes = {};
   batches = {};
-  url = 'http://brewtool_api:5000/';
+  url = 'http://localhost:5000/';
 
   constructor(private http: HttpClient) { }
 
@@ -119,11 +119,11 @@ export class DataService {
   }
 
   getMetrics(){
-    return this.http.get(this.url + 'getMetrics");
+    return this.http.get(this.url + 'getMetrics');
   }
 
   putMetrics(id,data){
     let datas = {id:id,data:data};
-    return this.http.post(this.url + 'putMetrics", datas);
+    return this.http.post(this.url + 'putMetrics', datas);
   }
 }
