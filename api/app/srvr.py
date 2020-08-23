@@ -29,11 +29,6 @@ def home():
   if request.method == 'GET':
     return(jsonify({'Status':'Working'}))
 
-@app.route("/pg", methods=['GET'])
-def pg():
-  if request.method == 'GET':
-    return(jsonify({'Status':postgres.test()}))
-
 @app.route("/getIngredients", methods=['GET'])
 def getIngredients():
   if request.method == 'GET':
@@ -42,8 +37,10 @@ def getIngredients():
 
 @app.route("/getRecipes")
 def getRecipes():
+  print('getting recipes')
   try:
-    data = recipes.find()
+    #data = recipes.find()
+    data = postgres.getRecipes()
   except:
     print('failed to get recipes')
   return(dumps(data))
@@ -51,7 +48,8 @@ def getRecipes():
 @app.route("/getBatches")
 def getBatches():
   try:
-    data = batches.find()
+    #data = batches.find()
+    data = postgres.getBatches()
   except:
     print('failed to get batches')
     data = {}
@@ -61,17 +59,19 @@ def getBatches():
 def addRecipe():
   data = request.data
   try:
-    post_id = recipes.insert_one(json.loads(data)).inserted_id
-    return(jsonify({'Status':'success'}))
+    #post_id = recipes.insert_one(json.loads(data)).inserted_id
+    postgres.insertRecipe(str(data))
+    return(jsonify({'Status':'success'+str(data)}))
   except:
     print('failed to post')
-    return(jsonify({'Status':'failed'}))
+    return(jsonify({'Status':'failed'+str(data)}))
 
 @app.route('/addBatch', methods=['POST'])
 def addBatch():
   data = request.data
   try:
-    post_id = batches.insert_one(json.loads(data)).inserted_id
+    #post_id = batches.insert_one(json.loads(data)).inserted_id
+    postgres.insertBatch(str(data))
     return(jsonify({'Status':'success'}))
   except:
     print('failed to post')
