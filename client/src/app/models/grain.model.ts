@@ -1,4 +1,5 @@
 export class Grain {
+    id: string;
     name: string;
     maltster: string;
     region: string;

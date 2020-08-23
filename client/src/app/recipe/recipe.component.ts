@@ -27,8 +27,9 @@ export class RecipeComponent {
   grainModal = false;
   grains: Grain[] = [];
   hops: Hop[]  = [];
-  availableHops: Hop[] = [];
-  availableGrains: Grain[] = [];
+  availableHops = [];
+  availableGrains = [{name:'taco',id:'asdf'}];
+  availableYeasts = []; 
   selectedGrains: Grain[] = [];
   selectedHops: Hop[] = [];
   hopModal = false;
@@ -37,18 +38,13 @@ export class RecipeComponent {
     this.d.getRecipes().subscribe(x => {
       this.recipes = x as Recipe[];
     })
-    this.d.getGrains().subscribe(x => {
-      this.grains = x as Grain[];
-      this.clearOid();
-    })
-    this.d.getHops().subscribe(x => {
-      this.hops = x as Hop[];
-      this.clearOid();
-    })
-    this.d.getYeast().subscribe(x => {
-      this.yeast = x as Yeast[];
-      this.clearOid();
-    })
+    this.grains = this.d.getGrains();
+    for(let g of this.grains){
+      this.availableGrains.push(g);
+    }
+    this.hops = this.d.getHops();
+    this.yeast = this.d.getYeasts();
+
   }
 
   getRecipe(id) {
@@ -87,10 +83,10 @@ export class RecipeComponent {
   saveRecipe() {
     delete this.selectedRecipe['_id']; 
     this.clearOid();
+    console.log(this.selectedRecipe);
     this.d.addRecipe(this.selectedRecipe).subscribe(x =>
         this.d.getRecipes().subscribe(x => this.recipes = <any>x));
     this.recipeModal = !this.recipeModal;
-    
   }
 
   deleteRecipe(id) {
@@ -100,63 +96,7 @@ export class RecipeComponent {
     });
   }
 
-  resetGrains() {
-    this.d.getGrains().subscribe(x => {
-      this.grains = x as Grain[];
-    })
-  }
-
-  resetHops() {
-    this.d.getHops().subscribe(x => {
-      this.hops = x as Hop[];
-    })
-  }
-
-  resetYeast() {
-    this.d.getYeast().subscribe(x => {
-      this.yeast = x as Yeast[];
-    })
-  }
-
-  addYeast(name, description) {
-    const yeast = new Yeast();
-    yeast.name=name;
-    yeast.description=description;
-    this.d.addYeast(yeast).subscribe(x => this.resetYeast());
-    this.yeastList = !this.yeastList;
-  }
-
-  addGrain(name, description) {
-    const grain = new Grain();
-    grain.name=name;
-    grain.description=description;
-    this.d.addGrains(grain).subscribe(x => this.resetGrains());
-    this.grainList = !this.grainList;
-  }
-
-  addHop(name, description, alpha) {
-    const hop = new Hop();
-    hop.name=name;
-    hop.description=description;
-    hop.alpha=alpha;
-    this.d.addHops(hop).subscribe(x => this.resetHops());
-    this.hopList = !this.hopList;
-  }
-
-  removeGrain(id) {
-    this.d.deleteGrains(id).subscribe(x => this.resetGrains());
-  }
-
-  removeYeast(id) {
-    this.d.deleteYeast(id).subscribe(x => this.resetYeast());
-  }
-
-  removeHop(id) {
-    this.d.deleteHops(id).subscribe(x => this.resetHops());
-  }
-
   newBatch(id) {
     this.router.navigate(['/batches/' + id]);
   }
-
 }

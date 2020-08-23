@@ -1,4 +1,5 @@
 export class Yeast {
+    id:string;
     name: string;
     manufacturer: string;
     flocculation:string;

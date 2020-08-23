@@ -3,6 +3,7 @@ from flask_cors import CORS
 import requests
 import json
 from sql import mysqldb
+from pg import postgres
 from pymongo import MongoClient
 import datetime
 import pprint
@@ -12,8 +13,10 @@ from bson.objectid import ObjectId
 app = Flask(__name__)
 CORS(app)
 
-client = MongoClient('brewtool_mongo',27017)
-db = client.brew_database
+client = MongoClient('brewtool_mongo',
+                     username='mongoadmin',
+                     password='@WSXcde3@WSXcde3')
+db = client.brewtool_database
 recipes = db.recipes
 batches = db.batches
 grains = db.grains
@@ -26,13 +29,18 @@ def home():
   if request.method == 'GET':
     return(jsonify({'Status':'Working'}))
 
-@app.route("/getData", methods=['GET'])
-def getData():
+@app.route("/pg", methods=['GET'])
+def pg():
+  if request.method == 'GET':
+    return(jsonify({'Status':postgres.test()}))
+
+@app.route("/getIngredients", methods=['GET'])
+def getIngredients():
   if request.method == 'GET':
     data = mysqldb.getAll()
     return(data)
 
-@app.route("/get_recipes")
+@app.route("/getRecipes")
 def getRecipes():
   try:
     data = recipes.find()
@@ -40,7 +48,7 @@ def getRecipes():
     print('failed to get recipes')
   return(dumps(data))
 
-@app.route("/get_batches")
+@app.route("/getBatches")
 def getBatches():
   try:
     data = batches.find()
@@ -49,31 +57,7 @@ def getBatches():
     data = {}
   return(dumps(data))
 
-@app.route("/get_grains")
-def getGrains():
-  try:
-    data = grains.find()
-  except:
-    print('failed to get grains')
-  return(dumps(data))
-
-@app.route("/get_hops")
-def getHops():
-  try:
-    data = hops.find()
-  except:
-    print('failed to get hops')
-  return(dumps(data))
-
-@app.route("/get_yeast")
-def getYeast():
-  try:
-    data = yeast.find()
-  except:
-    print('failed to get yeast')
-  return(dumps(data))
-
-@app.route('/add_recipe', methods=['POST'])
+@app.route('/addRecipe', methods=['POST'])
 def addRecipe():
   data = request.data
   try:
@@ -83,7 +67,7 @@ def addRecipe():
     print('failed to post')
     return(jsonify({'Status':'failed'}))
 
-@app.route('/add_batch', methods=['POST'])
+@app.route('/addBatch', methods=['POST'])
 def addBatch():
   data = request.data
   try:
@@ -93,37 +77,7 @@ def addBatch():
     print('failed to post')
     return(jsonify({'Status':'failed'}))
 
-@app.route('/add_grains', methods=['POST'])
-def addGrains():
-  data = request.data
-  try:
-    post_id = grains.insert_one(json.loads(data)).inserted_id
-    return(jsonify({'Status':'success'}))
-  except:
-    print('failed to post')
-    return(jsonify({'Status':'failed'}))
-
-@app.route('/add_hops', methods=['POST'])
-def addHops():
-  data = request.data
-  try:
-    post_id = hops.insert_one(json.loads(data)).inserted_id
-    return(jsonify({'Status':'success'}))
-  except:
-    print('failed to post')
-    return(jsonify({'Status':'failed'}))
-
-@app.route('/add_yeast', methods=['POST'])
-def addYeast():
-  data = request.data
-  try:
-    post_id = yeast.insert_one(json.loads(data)).inserted_id
-    return(jsonify({'Status':'success'}))
-  except:
-    print('failed to post')
-    return(jsonify({'Status':'failed'}))
-
-@app.route('/delete_recipe', methods=['GET'])
+@app.route('/deleteRecipe', methods=['GET'])
 def deleteRecipe():
     id = request.args.get('id')
     payload = {'_id': ObjectId(id) }
@@ -134,45 +88,12 @@ def deleteRecipe():
       result = {'status':'failure'}
     return(jsonify(result))
 
-@app.route('/delete_batch', methods=['GET'])
+@app.route('/deleteBatch', methods=['GET'])
 def deleteBatches():
     id = request.args.get('id')
     payload = {'_id': ObjectId(id) }
     try:
       batches.delete_one(payload)
-      result = {'status':'success'}
-    except:
-      result = {'status':'failure'}
-    return(jsonify(result))
-
-@app.route('/delete_grains', methods=['GET'])
-def deleteGrains():
-    id = request.args.get('id')
-    payload = {'_id': ObjectId(id) }
-    try:
-      grains.delete_one(payload)
-      result = {'status':'success'}
-    except:
-      result = {'status':'failure'}
-    return(jsonify(result))
-
-@app.route('/delete_hops', methods=['GET'])
-def deleteHops():
-    id = request.args.get('id')
-    payload = {'_id': ObjectId(id) }
-    try:
-      hops.delete_one(payload)
-      result = {'status':'success'}
-    except:
-      result = {'status':'failure'}
-    return(jsonify(result))
-
-@app.route('/delete_yeast', methods=['GET'])
-def deleteYeast():
-    id = request.args.get('id')
-    payload = {'_id': ObjectId(id) }
-    try:
-      yeast.delete_one(payload)
       result = {'status':'success'}
     except:
       result = {'status':'failure'}
@@ -207,4 +128,3 @@ def deleteMetrics():
 
 if __name__=='__main__':
   app.run(host='0.0.0.0')
-

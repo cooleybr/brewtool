@@ -16,6 +16,8 @@ import { TableModule } from 'primeng/table';
 import { ListboxModule } from 'primeng/listbox';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ChartModule } from 'primeng/chart';
+import {CheckboxModule} from 'primeng/checkbox';
+import {RadioButtonModule} from 'primeng/radiobutton';
 
 import { RecipeComponent } from './recipe/recipe.component';
 import { BatchesComponent } from './batches/batches.component';
@@ -49,7 +51,9 @@ import { HomeComponent } from './home/home.component';
     MenubarModule,
     FileUploadModule,
     ChartModule,
-    TableModule
+    TableModule,
+    CheckboxModule,
+    RadioButtonModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]

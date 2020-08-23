@@ -20,98 +20,43 @@
               <td colspan="1">{{recipe.title}}</td>
               <td colspan="3">{{recipe.description}}</td>
               <td colspan="1" style="text-align: center;">
-                <i class="pi pi-eye" title="View" style="font-size: 1.25rem" (click)="getRecipe(recipe['_id']['$oid'])"></i>
-                <i class="pi pi-copy" title="Copy" style="font-size: 1.25rem" (click)="cloneRecipe(recipe['_id']['$oid'])"></i>
-                <i class="pi pi-trash" title="Delete" style="font-size: 1.25rem" (click)="deleteRecipe(recipe['_id']['$oid'])"></i>
-                <i class="pi pi-play" title="Make" style="font-size: 1.25rem" (click)="newBatch(recipe['_id']['$oid'])"></i>
+                <i class="pi pi-eye" title="View" style="font-size: 1.25rem"
+                  (click)="getRecipe(recipe['_id']['$oid'])"></i>
+                <i class="pi pi-copy" title="Copy" style="font-size: 1.25rem"
+                  (click)="cloneRecipe(recipe['_id']['$oid'])"></i>
+                <i class="pi pi-trash" title="Delete" style="font-size: 1.25rem"
+                  (click)="deleteRecipe(recipe['_id']['$oid'])"></i>
+                <i class="pi pi-play" title="Make" style="font-size: 1.25rem"
+                  (click)="newBatch(recipe['_id']['$oid'])"></i>
               </td>
             </tr>
           </ng-template>
         </p-table>
         <h3 style="float:right" (click)="addRecipe()">
           Add Recipe <i class="pi pi-plus" title="Add"></i>
-          </h3>
+        </h3>
       </div>
       <p></p>
       <div class="p-grid">
         <div class="p-col-4">
           <div class="table">
-            <h3>Grains</h3>
-            <p-table [value]="grains" [autoLayout]="true">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Actions</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-grain>
-                <tr>
-                  <td>{{grain.name}}</td>
-                  <td>{{grain.description}}</td>
-                  <td  style="text-align: center;">
-                    <i class="pi pi-trash" title="Delete" (click)="removeGrain(grain['_id']['$oid'])" style="font-size: 1.25rem"></i>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
-            <h3 style="float:right" (click)="grainList=!grainList">
-              Add Grain <i class="pi pi-plus" title="Add"></i>
+            <h3 style="float:right" (click)="grainModal=!grainModal">
+              View/Select Grains <i class="pi pi-plus" title="Add"></i>
             </h3>
           </div>
         </div>
         <div class="p-col-4">
           <div class="table">
-            <h3>Hops</h3>
-            <p-table [value]="hops" [autoLayout]="true">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Alpha</th>
-                  <th>Actions</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-hop>
-                <tr>
-                  <td>{{hop.name}}</td>
-                  <td>{{hop.description}}</td>
-                  <td>{{ hop.alpha }}</td>
-                  <td  style="text-align: center;">
-                    <i class="pi pi-trash" title="Delete" (click)="removeHop(hop['_id']['$oid'])" style="font-size: 1.25rem"></i>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
-            <h3 style="float:right" (click)="hopList=!hopList">
-               Add Hops <i class="pi pi-plus" title="Add"></i>
-               </h3>
+            <h3 style="float:right" (click)="hopModal=!hopModal">
+              View/Select Hops <i class="pi pi-plus" title="Add"></i>
+            </h3>
           </div>
         </div>
         <div class="p-col-4">
           <div class="table">
-            <h3>Yeast</h3>
-            <p-table [value]="yeast" [autoLayout]="true">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Actions</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-yeast>
-                <tr>
-                  <td>{{yeast.name}}</td>
-                  <td>{{yeast.description}}</td>
-                  <td  style="text-align: center;">
-                    <i class="pi pi-trash" title="Delete" (click)="removeYeast(yeast['_id']['$oid'])" style="font-size: 1.25rem"></i>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
-            <h3 style="float:right">
-               Add Yeast <i class="pi pi-plus" title="Add" (click)="yeastList=!yeastList"></i>
-               </h3>
+            <h3 style="float:right" (click)="yeastModal=!yeastModal">
+              View/Select Yeast <i class="pi pi-plus" title="Add"></i>
+            </h3>
           </div>
         </div>
       </div>
@@ -133,7 +78,7 @@
     <h3 class="recModal">Description: </h3>
     {{ recipeDetails['description'] }}
     <p></p>
-      <h3 class="recModal">Grains:</h3>
+    <h3 class="recModal">Grains:</h3>
     <div class="recModList" *ngFor="let g of recipeDetails['grains']">
       {{ g['quantity'] }} lb {{ g['name'] }}
     </div>
@@ -152,26 +97,6 @@
   </div>
 </p-dialog>
 
-<p-dialog header="Add/Remove Grains" [(visible)]="grainList">
-
-  <p><b>Name:</b><input type="text" #newGrainTitle /> </p>
-  <p><b>Description:</b><input type="text" #newGrainDescription /></p> 
-  <button pButton label="Add" (click)="addGrain(newGrainTitle.value,newGrainDescription.value)"></button>
-</p-dialog>
-
-<p-dialog header="Add/Remove Hops" [(visible)]="hopList">
-  <p><b>Name:</b><input type="text" #newHopTitle /> </p>
-  <p><b>Description:</b><input type="text" #newHopDescription /></p>
-  <p><b>Alpha:</b><input type="text" #newHopAlpha /> </p>
-  <button pButton label="Add" (click)="addHop(newHopTitle.value, newHopDescription.value,newHopAlpha.value)"></button>
-</p-dialog>
-
-<p-dialog header="Add/Remove Yeast" [(visible)]="yeastList">
-  <p><b>Name:</b><input type="text" #newYeastTitle /> </p>
-  <p><b>Description:</b><input type="text" #newYeastDescription /></p>
-  <button pButton label="Add" (click)="addYeast(newYeastTitle.value, newYeastDescription.value)"></button>
-</p-dialog>
-
 <p-dialog header={{recipeModalTitle}} [(visible)]="recipeModal" width="40vw">
   <div class="recModal">
     <table>
@@ -183,30 +108,33 @@
       <tr>
         <td>Description:</td>
         <td></td>
-        <td><input [(ngModel)]="selectedRecipe['description']"/></td>
+        <td><input [(ngModel)]="selectedRecipe['description']" /></td>
       </tr>
       <tr>
         <td>Target Gravity:</td>
         <td></td>
         <td><input [(ngModel)]="selectedRecipe['OG']" /></td>
       </tr>
-      
+
       <tr style="min-height: 50px; text-align:center">
-        <td class="boxed" width="200px"><h3 (click)="grainModal=!grainModal">Grains <i class="pi pi-plus" title="Add"></i></h3>
+        <td class="boxed" width="200px">
+          <h3 (click)="grainModal=!grainModal">Grains <i class="pi pi-plus" title="Add"></i></h3>
           <span *ngFor="let c of selectedRecipe['grains']">
             <p>{{c.name}} <input type="number" style="width:4em" [(ngModel)]="c.quantity"></p>
           </span>
         </td>
-        <td class="boxed" width="200px"><h3 (click)="hopModal=!hopModal">Hops <i class="pi pi-plus" title="Add"></i></h3>
+        <td class="boxed" width="200px">
+          <h3 (click)="hopModal=!hopModal">Hops <i class="pi pi-plus" title="Add"></i></h3>
           <span *ngFor="let c of selectedRecipe['hops']">
-            <p>{{c.name}}<input type="number" style="width:4em" [(ngModel)]="c.quantity"></p></span>
+            <p>{{c.name}}<input type="number" style="width:4em" [(ngModel)]="c.quantity"></p>
+          </span>
         </td>
-          <td class="boxed" width="200px">
-            <h3 (click)="yeastModal=!yeastModal">Yeast <i class="pi pi-plus" title="Add"></i></h3>
-            <span *ngFor="let c of selectedRecipe['yeast']">
-              <p>{{c.name}}<input type="text" style="width:4em" [(ngModel)]="c.quantity"></p>
-            </span>
-          </td>
+        <td class="boxed" width="200px">
+          <h3 (click)="yeastModal=!yeastModal">Yeast <i class="pi pi-plus" title="Add"></i></h3>
+          <span *ngFor="let c of selectedRecipe['yeast']">
+            <p>{{c.name}}<input type="text" style="width:4em" [(ngModel)]="c.quantity"></p>
+          </span>
+        </td>
       </tr>
       <tr>
         <td>Instructions:</td>
@@ -219,29 +147,94 @@
 
 </p-dialog>
 
-<p-dialog header="Add Hops" position="right" [(visible)]="hopModal">
-  <p-listbox [options]="hops" [(ngModel)]="selectedRecipe['hops']" multiple="false" checkbox="checkbox" filter="filter"
-    optionLabel="name">
-    <p-header>
-      Hops
-    </p-header>
-  </p-listbox>
+<p-dialog header="View Hops" [(visible)]="hopModal">
+  <p-table #ht [showCurrentPageReport]="true" dataKey="id" [value]="hops" [autoLayout]="true"
+    [globalFilterFields]="['name','description','type']">
+    <ng-template pTemplate="caption">
+      <div class="table-header">
+Search Hops          <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="ht.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+          </span>
+      </div>
+  </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name </th>
+          <th>Alpha</th>
+          <th>Type</th>
+          <th>Select</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-hop>
+      <tr>
+        <td>{{hop.name}}</td>
+        <td>{{hop.alpha}}</td>
+        <td>{{ hop.type }}</td>
+        <td><p-checkbox [value]="hop" [(ngModel)]="selectedRecipe.hops"></p-checkbox></td>
+      </tr>
+    </ng-template>
+  </p-table>
 </p-dialog>
 
-<p-dialog header="Add Grains" position="right" [(visible)]="grainModal">
-  <p-listbox [options]="grains" [(ngModel)]="selectedRecipe['grains']" multiple="multiple" checkbox="checkbox" filter="filter"
-    optionLabel="name">
-    <p-header>
-      Grains
-    </p-header>
-  </p-listbox>
+<p-dialog header="View Grains" [(visible)]="grainModal">
+  <p-table #gt [showCurrentPageReport]="true" dataKey="id" [value]="grains" [autoLayout]="true"
+    [globalFilterFields]="['name','description','type']">
+    <ng-template pTemplate="caption">
+      <div class="table-header">
+Search Grains          <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="gt.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+          </span>
+      </div>
+  </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>
+          Name </th>
+        <th>
+          Description </th>
+          <th>Type</th>
+          <th>Select</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-grain>
+      <tr>
+        <td>{{grain.name}}</td>
+        <td>{{grain.description}}</td>
+        <td>{{ grain.type }}</td>
+        <td><p-checkbox [value]="grain" [(ngModel)]="selectedRecipe.grains"></p-checkbox></td>
+      </tr>
+    </ng-template>
+  </p-table>
 </p-dialog>
 
-<p-dialog header="Add Yeast" position="right" [(visible)]="yeastModal">
-  <p-listbox [options]="yeast" [(ngModel)]="selectedRecipe['yeast']" multiple="multiple" checkbox="checkbox" filter="filter"
-    optionLabel="name">
-    <p-header>
-      Grains
-    </p-header>
-  </p-listbox>
+<p-dialog header="View Yeast" [(visible)]="yeastModal">
+  <p-table #yt [value]="yeast" [globalFilterFields]="['name','description','type']" [autoLayout]="true">
+    <ng-template pTemplate="caption">
+      <div class="table-header">
+Search Yeasts         
+ <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="yt.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+          </span>
+      </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Select</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-yeast>
+      <tr>
+        <td>{{yeast.name}}</td>
+        <td>{{yeast.description}}</td>
+        <td><p-checkbox [value]="yeast" [(ngModel)]="selectedRecipe.yeast"></p-checkbox></td>
+      </tr>
+    </ng-template>
+  </p-table>
 </p-dialog>
