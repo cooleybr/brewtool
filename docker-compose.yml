@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+  api:
+    image: brewtool_api
+    #build: api/.
+    ports:
+      - "5000:5000"
+#  postgres:
+#    image: postgres
+#    restart: always
+#    environment:
+#      POSTGRES_USER: brewtool
+#      POSTGRES_DB: brewtool
+#      POSTGRES_PASSWORD: "@WSXcde3@WSXcde3"
+#      PGDATA: /var/lib/postgresql/data
+#    volumes:
+#      - /opt/brewtool/postgres:/var/lib/postgresql/data
+#    ports:
+#      - "5432:5432"
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "@WSXcde3@WSXcde3"
+    volumes:
+      - /opt/brewtool/sql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+#  mongo:
+#    image: mongo
+#    restart: always
+#    environment: 
+#      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+#      MONGO_INITDB_ROOT_PASSWORD: "@WSXcde3@WSXcde3"
+#    volumes:
+#      - /opt/brewtool/mongo:/data/db 
+#    ports:
+#      - "27017:27017"
+#  client:
+#    image: brewtool_client
+#    #build: client/.
+#    ports:
+#      - "4200:4200"

@@ -4,15 +4,16 @@ import { Observable, of } from 'rxjs';
 import { Grain } from '../models/grain.model';
 import { Yeast } from '../models/yeast.model';
 import { Hop } from '../models/hop.model';
-
+import { Recipe } from '../models/recipe.model';
+import { Batch } from '../models/batch.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  recipes = {};
-  batches = {};
+  recipes: Recipe[] = [];
+  batches: Batch[] = [];
   ingredients = {};
   grains: Grain[] = [];
   hops: Hop[] = [];
@@ -23,18 +24,14 @@ export class DataService {
 
   getRecipes() {
     this.http.get(this.url + 'getRecipes').subscribe(x => {
-      console.log(x);
-      for (let r of Object.keys(x)) {
-       this.recipes[x[r]['_id']['$oid']] = x[r];
+      let arr = x as Object[];
+      for (let r of arr) {
+       let rec = JSON.parse(r[1]) as Recipe;
+       rec['id']=r[0];
+       this.recipes.push(rec);
       }
     });
-
-    try {
-      return this.http.get(this.url + 'getRecipes');
-    }
-    catch (e) {
-      return of([]);
-    }
+    return of(this.recipes);
   }
 
   getIngredients(){
@@ -114,7 +111,7 @@ export class DataService {
   getBatches() {
     this.http.get(this.url + 'getBatches').subscribe(x => {
       for (let r of Object.keys(x)) {
-        this.batches[x[r]['_id']['$oid']] = x[r];
+        this.batches[x[r]['id']] = x[r];
       }
     });
     try {

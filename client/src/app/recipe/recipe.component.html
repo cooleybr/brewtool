@@ -21,13 +21,13 @@
               <td colspan="3">{{recipe.description}}</td>
               <td colspan="1" style="text-align: center;">
                 <i class="pi pi-eye" title="View" style="font-size: 1.25rem"
-                  (click)="getRecipe(recipe['_id']['$oid'])"></i>
+                  (click)="getRecipe(recipe['id'])"></i>
                 <i class="pi pi-copy" title="Copy" style="font-size: 1.25rem"
-                  (click)="cloneRecipe(recipe['_id']['$oid'])"></i>
+                  (click)="cloneRecipe(recipe['id'])"></i>
                 <i class="pi pi-trash" title="Delete" style="font-size: 1.25rem"
-                  (click)="deleteRecipe(recipe['_id']['$oid'])"></i>
+                  (click)="deleteRecipe(recipe['id'])"></i>
                 <i class="pi pi-play" title="Make" style="font-size: 1.25rem"
-                  (click)="newBatch(recipe['_id']['$oid'])"></i>
+                  (click)="newBatch(recipe['id'])"></i>
               </td>
             </tr>
           </ng-template>
@@ -91,8 +91,8 @@
     {{ recipeDetails['instructions'] }}
     <p></p>
     <div class="options">
-      <button pButton label="Delete" (click)="deleteRecipe(recipeDetails['_id']['$oid'])"></button>
-      <button pButton label="New Batch" (click)="newBatch(recipeDetails['_id']['$oid'])"></button>
+      <button pButton label="Delete" (click)="deleteRecipe(recipeDetails['id'])"></button>
+      <button pButton label="New Batch" (click)="newBatch(recipeDetails['id'])"></button>
     </div>
   </div>
 </p-dialog>

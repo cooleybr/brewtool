@@ -3,8 +3,8 @@ from flask_cors import CORS
 import requests
 import json
 from sql import mysqldb
-from pg import postgres
-from pymongo import MongoClient
+#from pg import postgres
+#from pymongo import MongoClient
 import datetime
 import pprint
 from bson.json_util import dumps
@@ -13,16 +13,17 @@ from bson.objectid import ObjectId
 app = Flask(__name__)
 CORS(app)
 
-client = MongoClient('brewtool_mongo',
-                     username='mongoadmin',
-                     password='@WSXcde3@WSXcde3')
-db = client.brewtool_database
-recipes = db.recipes
-batches = db.batches
-grains = db.grains
-hops = db.hops
-yeast = db.yeast
-metrics = db.metrics
+#client = MongoClient('localhost',27017)
+#client = MongoClient('mongo',
+#                     username='mongoadmin',
+#                     password='@WSXcde3@WSXcde3')
+#db = client.brewtool_database
+#recipes = db.recipes
+#batches = db.batches
+#grains = db.grains
+#hops = db.hops
+#yeast = db.yeast
+#metrics = db.metrics
 
 @app.route("/", methods=['GET'])
 def home():
@@ -33,14 +34,15 @@ def home():
 def getIngredients():
   if request.method == 'GET':
     data = mysqldb.getAll()
-    return(data)
+    return(dumps(data))
 
 @app.route("/getRecipes")
 def getRecipes():
   print('getting recipes')
   try:
+    data = mysqldb.getRecipes()
     #data = recipes.find()
-    data = postgres.getRecipes()
+    #data = postgres.getRecipes()
   except:
     print('failed to get recipes')
   return(dumps(data))
@@ -48,8 +50,9 @@ def getRecipes():
 @app.route("/getBatches")
 def getBatches():
   try:
+    data = mysqldb.getBatches()
     #data = batches.find()
-    data = postgres.getBatches()
+    #data = postgres.getBatches()
   except:
     print('failed to get batches')
     data = {}
@@ -59,8 +62,9 @@ def getBatches():
 def addRecipe():
   data = request.data
   try:
+    id = mysqldb.addRecipe(dumps(data))
     #post_id = recipes.insert_one(json.loads(data)).inserted_id
-    postgres.insertRecipe(str(data))
+    #postgres.insertRecipe(str(data))
     return(jsonify({'Status':'success'+str(data)}))
   except:
     print('failed to post')
@@ -70,8 +74,9 @@ def addRecipe():
 def addBatch():
   data = request.data
   try:
+    id = mysqldb.addBatch(dumps(data))
     #post_id = batches.insert_one(json.loads(data)).inserted_id
-    postgres.insertBatch(str(data))
+    #postgres.insertBatch(str(data))
     return(jsonify({'Status':'success'}))
   except:
     print('failed to post')
@@ -80,9 +85,10 @@ def addBatch():
 @app.route('/deleteRecipe', methods=['GET'])
 def deleteRecipe():
     id = request.args.get('id')
-    payload = {'_id': ObjectId(id) }
+    #payload = {'_id': ObjectId(id) }
     try:
-      recipes.delete_one(payload)
+      mysqldb.deleteRecipe(id)
+      #recipes.delete_one(payload)
       result = {'status':'success'}
     except:
       result = {'status':'failure'}
@@ -91,9 +97,10 @@ def deleteRecipe():
 @app.route('/deleteBatch', methods=['GET'])
 def deleteBatches():
     id = request.args.get('id')
-    payload = {'_id': ObjectId(id) }
+    #payload = {'_id': ObjectId(id) }
     try:
-      batches.delete_one(payload)
+      mysqldb.deleteBatch(id)
+      #batches.delete_one(payload)
       result = {'status':'success'}
     except:
       result = {'status':'failure'}

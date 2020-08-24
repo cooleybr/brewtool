@@ -3,7 +3,7 @@ import psycopg2
 def getCon():
   connection = psycopg2.connect(user = "brewtool",
                               password = "@WSXcde3@WSXcde3",
-                              host = "brewtool_postgres",
+                              host = "postgres",
                               port = "5432",
                               database = "brewtool")
   cursor = connection.cursor()
