@@ -1,0 +1,5 @@
+Flask==1.0.1
+Flask_Cors==3.0.7
+requests==2.18.4
+mysql-connector-python==8.0.21
+pymongo==3.11.0
