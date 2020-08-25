@@ -3,3 +3,4 @@ Flask_Cors==3.0.7
 requests==2.18.4
 mysql-connector-python==8.0.21
 pymongo==3.11.0
+gevent==20.6.2

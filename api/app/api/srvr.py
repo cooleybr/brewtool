@@ -10,8 +10,8 @@ import pprint
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 
-app = Flask(__name__)
-CORS(app)
+flasky = Flask(__name__)
+CORS(flasky)
 
 #client = MongoClient('localhost',27017)
 def getCon():
@@ -31,18 +31,18 @@ def getCon():
 #yeast = db.yeast
 #metrics = db.metrics
 
-@app.route("/", methods=['GET'])
+@flasky.route("/", methods=['GET'])
 def home():
   if request.method == 'GET':
     return(jsonify({'Status':'Working'}))
 
-@app.route("/getIngredients", methods=['GET'])
+@flasky.route("/getIngredients", methods=['GET'])
 def getIngredients():
   if request.method == 'GET':
     data = mysqldb.getAll()
     return(dumps(data))
 
-@app.route("/getRecipes")
+@flasky.route("/getRecipes")
 def getRecipes():
   db = getCon()
   print('getting recipes')
@@ -54,7 +54,7 @@ def getRecipes():
     print('failed to get recipes')
   return(dumps(data))
 
-@app.route("/getBatches")
+@flasky.route("/getBatches")
 def getBatches():
   db = getCon()
   try:
@@ -66,7 +66,7 @@ def getBatches():
     data = {}
   return(dumps(data))
 
-@app.route('/addRecipe', methods=['POST'])
+@flasky.route('/addRecipe', methods=['POST'])
 def addRecipe():
   data = request.data
   db = getCon()
@@ -79,7 +79,7 @@ def addRecipe():
     print('failed to post')
     return(jsonify({'Status':'failed'}))
 
-@app.route('/addBatch', methods=['POST'])
+@flasky.route('/addBatch', methods=['POST'])
 def addBatch():
   db = getCon()
   data = request.data
@@ -92,7 +92,7 @@ def addBatch():
     print('failed to post')
     return(jsonify({'Status':'failed'}))
 
-@app.route('/deleteRecipe', methods=['GET'])
+@flasky.route('/deleteRecipe', methods=['GET'])
 def deleteRecipe():
     id = request.args.get('id')
     payload = {'_id': ObjectId(id) }
@@ -104,7 +104,7 @@ def deleteRecipe():
       result = {'status':'failure'}
     return(jsonify(result))
 
-@app.route('/deleteBatch', methods=['GET'])
+@flasky.route('/deleteBatch', methods=['GET'])
 def deleteBatches():
     id = request.args.get('id')
     payload = {'_id': ObjectId(id) }
@@ -116,7 +116,7 @@ def deleteBatches():
       result = {'status':'failure'}
     return(jsonify(result))
 
-@app.route('/putMetrics', methods=['POST'])
+@flasky.route('/putMetrics', methods=['POST'])
 def putMetrics():
   data = request.data
   try:
@@ -126,7 +126,7 @@ def putMetrics():
     print('failed to post')
     return(jsonify({'Status':'failed'}))
 
-@app.route('/getMetrics', methods=['GET'])
+@flasky.route('/getMetrics', methods=['GET'])
 def getMetrics():
   try:
     data = metrics.find()
@@ -134,7 +134,7 @@ def getMetrics():
     print('failed to get recipes')
   return (dumps(data))
 
-@app.route('/deleteMetrics', methods=['GET'])
+@flasky.route('/deleteMetrics', methods=['GET'])
 def deleteMetrics():
     try:
       metrics.delete_many({})
@@ -143,5 +143,5 @@ def deleteMetrics():
       result = {'status':'failure'}
     return(jsonify(result))
 
-if __name__=='__main__':
-  app.run(host='0.0.0.0')
+#if __name__=='__main__':
+#  app.run(host='0.0.0.0')
