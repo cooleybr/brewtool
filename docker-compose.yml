@@ -27,16 +27,16 @@ services:
       - /opt/brewtool/sql:/var/lib/mysql
     ports:
       - "3306:3306"
-#  mongo:
-#    image: mongo
-#    restart: always
-#    environment: 
-#      MONGO_INITDB_ROOT_USERNAME: mongoadmin
-#      MONGO_INITDB_ROOT_PASSWORD: "@WSXcde3@WSXcde3"
-#    volumes:
-#      - /opt/brewtool/mongo:/data/db 
-#    ports:
-#      - "27017:27017"
+  mongo:
+    image: mongo
+    restart: always
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: "@WSXcde3@WSXcde3"
+    volumes:
+      - /opt/brewtool/mongo:/data/db 
+    ports:
+      - "27017:27017"
 #  client:
 #    image: brewtool_client
 #    #build: client/.

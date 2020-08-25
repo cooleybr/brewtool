@@ -1,10 +1,7 @@
-FROM python:3.5-alpine
+FROM python:2.7-alpine
 
-RUN apk update && \
-    apk add --no-cache --virtual build-deps gcc python3-dev musl-dev && \
-    apk add postgresql-dev
-RUN pip install Flask flask_cors requests mysql-connector-python pymongo psycopg2
+RUN pip install Flask flask_cors requests mysql-connector-python pymongo
 COPY app /app
 WORKDIR /app
 EXPOSE 5000
-CMD python3 srvr.py
+CMD python srvr.py

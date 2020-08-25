@@ -2,7 +2,7 @@ import mysql.connector
 
 def getCon():
   mydb = mysql.connector.connect(
-      host="localhost",
+      host="mysql",
       user="root",
       password="@WSXcde3@WSXcde3",
       database="brewtool"
@@ -11,12 +11,7 @@ def getCon():
 
 def getAll():
   data = {"grains":[],"hops":[],"yeasts":[]}
-  mydb = mysql.connector.connect(
-                                  host="localhost",
-                                  user="root",
-                                  password="@WSXcde3@WSXcde3",
-                                  database="brewtool"
-                                 )
+  mydb = getCon()
   cursor = mydb.cursor()
   sql = "SELECT * FROM grains;"
   cursor.execute(sql)
