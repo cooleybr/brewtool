@@ -45,7 +45,6 @@ def getIngredients():
 @flasky.route("/getRecipes")
 def getRecipes():
   db = getCon()
-  print('getting recipes')
   try:
     #data = mysqldb.getRecipes()
     data = db.recipes.find()
@@ -94,11 +93,12 @@ def addBatch():
 
 @flasky.route('/deleteRecipe', methods=['GET'])
 def deleteRecipe():
+    db = getCon()
     id = request.args.get('id')
     payload = {'_id': ObjectId(id) }
     try:
       #mysqldb.deleteRecipe(id)
-      recipes.delete_one(payload)
+      db.recipes.delete_one(payload)
       result = {'status':'success'}
     except:
       result = {'status':'failure'}
@@ -106,11 +106,12 @@ def deleteRecipe():
 
 @flasky.route('/deleteBatch', methods=['GET'])
 def deleteBatches():
+    db = getCon()
     id = request.args.get('id')
     payload = {'_id': ObjectId(id) }
     try:
       #mysqldb.deleteBatch(id)
-      batches.delete_one(payload)
+      db.batches.delete_one(payload)
       result = {'status':'success'}
     except:
       result = {'status':'failure'}
@@ -118,9 +119,10 @@ def deleteBatches():
 
 @flasky.route('/putMetrics', methods=['POST'])
 def putMetrics():
+  db = getCon()
   data = request.data
   try:
-    post_id = metrics.insert_one(json.loads(data)).inserted_id
+    post_id = db.metrics.insert_one(json.loads(data)).inserted_id
     return(jsonify({'Status':'success'}))
   except:
     print('failed to post')
@@ -128,14 +130,16 @@ def putMetrics():
 
 @flasky.route('/getMetrics', methods=['GET'])
 def getMetrics():
+  db = getCon()
   try:
-    data = metrics.find()
+    data = db.metrics.find()
   except:
     print('failed to get recipes')
   return (dumps(data))
 
 @flasky.route('/deleteMetrics', methods=['GET'])
 def deleteMetrics():
+    db = getCon()
     try:
       metrics.delete_many({})
       result = {'status':'success'}

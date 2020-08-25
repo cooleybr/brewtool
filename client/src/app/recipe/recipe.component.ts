@@ -35,9 +35,7 @@ export class RecipeComponent {
   hopModal = false;
 
   constructor(private d: DataService, private router: Router) {
-    this.d.getRecipes().subscribe(x => {
-      this.recipes = x as Recipe[];
-    })
+    this.getRecipes();
     this.grains = this.d.getGrains();
     for(let g of this.grains){
       this.availableGrains.push(g);
@@ -45,6 +43,13 @@ export class RecipeComponent {
     this.hops = this.d.getHops();
     this.yeast = this.d.getYeasts();
 
+  }
+
+  getRecipes(){
+    this.d.getRecipes().subscribe(x => {
+      this.recipes = x as Recipe[];
+      console.log(this.recipes);
+    })
   }
 
   getRecipe(id) {
@@ -57,43 +62,24 @@ export class RecipeComponent {
     this.recipeModalTitle = 'Clone Recipe';
     this.selectedRecipe = this.d.getRecipe(id);
     this.recipeModal = true;
-    this.clearOid();
   }
 
   addRecipe() {
     this.recipeModalTitle = 'Add a new recipe';
     this.recipeModal = true;
     this.selectedRecipe = new Recipe();
-    this.clearOid();
-  }
-
-  clearOid(){
-    if (this.selectedRecipe.hops.length > 0) {
-      for (let x of this.selectedRecipe.hops) {
-        delete x['_id'];
-      }
-    }
-    if (this.selectedRecipe.grains.length > 0) {
-      for (let x of this.selectedRecipe.grains) {
-        delete x['_id'];
-      }
-    }   
   }
 
   saveRecipe() {
     delete this.selectedRecipe['_id']; 
-    this.clearOid();
     console.log(this.selectedRecipe);
-    this.d.addRecipe(this.selectedRecipe).subscribe(x =>
-        this.d.getRecipes().subscribe(x => this.recipes = <any>x));
+    this.d.addRecipe(this.selectedRecipe).subscribe(x=>this.getRecipes());
     this.recipeModal = !this.recipeModal;
   }
 
   deleteRecipe(id) {
-    this.d.deleteRecipe(id).subscribe(x => {
-      this.d.getRecipes().subscribe(x => this.recipes = <any>x);
-      this.selectedRecipe = new Recipe();
-    });
+    this.d.deleteRecipe(id).subscribe(x=>this.getRecipes());
+    this.selectedRecipe = new Recipe();
   }
 
   newBatch(id) {

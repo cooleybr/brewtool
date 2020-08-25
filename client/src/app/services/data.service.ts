@@ -23,15 +23,10 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   getRecipes() {
-    this.http.get(this.url + 'getRecipes').subscribe(x => {
-      let arr = x as Object[];
-      for (let r of arr) {
-       let rec = JSON.parse(r[1]) as Recipe;
-       rec['id']=r[0];
-       this.recipes.push(rec);
-      }
+     this.http.get(this.url + 'getRecipes').subscribe(x => {
+      this.recipes = x as Recipe[];
     });
-    return of(this.recipes);
+    return this.http.get(this.url + 'getRecipes');
   }
 
   getIngredients(){
@@ -93,11 +88,15 @@ export class DataService {
   }
 
   getRecipe(id) {
-    return this.recipes[id];
+    for(const r of this.recipes){
+      if(r['_id']['$oid']==id){
+        return r;
+      }
+    }
   }
 
   addRecipe(recipe) {
-    return this.http.post(this.url + 'addRecipe', recipe);
+    return this.http.post(this.url + 'addRecipe', recipe)
   }
 
   deleteRecipe(id) {
