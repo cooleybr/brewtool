@@ -48,6 +48,7 @@
 
 <p-dialog [header]="getHeader()" [(visible)]="batchModal" [style]="{width: '50vw'}">
     <div class="description">
+        <p><b>Date:</b><input type="text" [(ngModel)]="this.batchDetails['date']"></p>
         <p><b>Name:</b><input type="text" [(ngModel)]="this.batchDetails['name']"></p>
         <p><b>Recipe Title: </b>{{ recipeDetails['title'] }}</p>
         <p><b>Description:</b>{{ recipeDetails['description'] }}</p>
