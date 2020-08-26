@@ -3,11 +3,12 @@ import { Grain } from './grain.model';
 import { Yeast } from './yeast.model';
 
 export class Recipe {
-    title: string = '';
-    description: string = '';
-    instructions: string = '';
+    title = '';
+    description = '';
+    instructions = '';
     hops: Hop[] = [];
     grains: Grain[] = [];
     yeast: Yeast[] = [];
-    OG?: number = 1.042;
+    OG? = '1.042';
+    quality = '';
 }

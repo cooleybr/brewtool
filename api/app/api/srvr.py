@@ -73,6 +73,21 @@ def addRecipe():
     #id = mysqldb.addRecipe(dumps(data))
     post_id = db.recipes.insert_one(json.loads(data)).inserted_id
     #postgres.insertRecipe(str(data))
+    return(jsonify({'Status':'Posted ' + str(post_id)}))
+  except:
+    print('failed to post')
+    return(jsonify({'Status':'failed'}))
+
+@flasky.route('/updateRecipe', methods=['POST'])
+def updateRecipe():
+  data = request.data
+  id = request.args.get('id')
+  finder = {'_id': ObjectId(id) }
+  recipe = json.loads(data)
+  newvalues = { "$set": recipe}
+  db = getCon()
+  try:
+    db.recipes.update_one(finder, newvalues)
     return(jsonify({'Status':'success'}))
   except:
     print('failed to post')
@@ -86,6 +101,21 @@ def addBatch():
     #id = mysqldb.addBatch(dumps(data))
     post_id = db.batches.insert_one(json.loads(data)).inserted_id
     #postgres.insertBatch(str(data))
+    return(jsonify({'Status':'success'}))
+  except:
+    print('failed to post')
+    return(jsonify({'Status':'failed'}))
+
+@flasky.route('/updateBatch', methods=['POST'])
+def updateBatch():
+  data = request.data
+  id = request.args.get('id')
+  finder = {'_id': ObjectId(id) }
+  batch = json.loads(data)
+  newvalues = { "$set": batch}
+  db = getCon()
+  try:
+    db.batches.update_one(finder, newvalues)
     return(jsonify({'Status':'success'}))
   except:
     print('failed to post')

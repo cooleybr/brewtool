@@ -20,24 +20,24 @@ export class RecipeComponent {
   recipeModalTitle = 'Add a new recipe';
   hopList = false;
   selectedRecipe: Recipe = new Recipe();
-  recipeDetails = {};
   recipeSelected = false;
   yeastModal = false;
   recipeModal = false;
   grainModal = false;
   grains: Grain[] = [];
-  hops: Hop[]  = [];
+  hops: Hop[] = [];
   availableHops = [];
-  availableGrains = [{name:'taco',id:'asdf'}];
-  availableYeasts = []; 
+  availableGrains = [{ name: 'taco', id: 'asdf' }];
+  availableYeasts = [];
   selectedGrains: Grain[] = [];
   selectedHops: Hop[] = [];
   hopModal = false;
+  edit = false;
 
   constructor(private d: DataService, private router: Router) {
     this.getRecipes();
     this.grains = this.d.getGrains();
-    for(let g of this.grains){
+    for (const g of this.grains) {
       this.availableGrains.push(g);
     }
     this.hops = this.d.getHops();
@@ -45,15 +45,27 @@ export class RecipeComponent {
 
   }
 
-  getRecipes(){
+  getRecipes() {
     this.d.getRecipes().subscribe(x => {
       this.recipes = x as Recipe[];
-      console.log(this.recipes);
     })
   }
 
+  editRecipe() {
+    this.edit = true;
+  }
+
+  updateRecipe() {
+    const id = this.selectedRecipe['_id']['$oid'];
+    delete this.selectedRecipe['_id'];
+    this.d.updateRecipe(id, this.selectedRecipe).subscribe(x => {
+      this.getRecipes();
+      this.edit = false;
+    });
+  }
+
   getRecipe(id) {
-    this.recipeDetails = this.d.getRecipe(id);
+    this.selectedRecipe = this.d.getRecipe(id);
     this.recipeSelected = true;
   }
 
@@ -71,14 +83,14 @@ export class RecipeComponent {
   }
 
   saveRecipe() {
-    delete this.selectedRecipe['_id']; 
+    delete this.selectedRecipe['_id'];
     console.log(this.selectedRecipe);
-    this.d.addRecipe(this.selectedRecipe).subscribe(x=>this.getRecipes());
+    this.d.addRecipe(this.selectedRecipe).subscribe(x => this.getRecipes());
     this.recipeModal = !this.recipeModal;
   }
 
   deleteRecipe(id) {
-    this.d.deleteRecipe(id).subscribe(x=>this.getRecipes());
+    this.d.deleteRecipe(id).subscribe(x => this.getRecipes());
     this.selectedRecipe = new Recipe();
   }
 

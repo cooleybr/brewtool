@@ -70,30 +70,64 @@
   </div>
 </div>
 
-<p-dialog header="Recipe Details" [style]="{width: '40vw'}" [(visible)]="recipeSelected">
-  <div class="description">
+<p-dialog header="Recipe Details" [style]="{width: '60vw'}" [(visible)]="recipeSelected" [closable]="false">
+  <div class="description" *ngIf="!edit">
     <h3 class="recModal">Name: </h3>
-    {{ recipeDetails['title'] }}
+    {{ selectedRecipe['title'] }}
     <p></p>
     <h3 class="recModal">Description: </h3>
-    {{ recipeDetails['description'] }}
+    {{ selectedRecipe['description'] }}
+    <p></p>
+    <h3 class="recModal">Target Gravity: </h3>
+    {{ selectedRecipe['OG'] }}
     <p></p>
     <h3 class="recModal">Grains:</h3>
-    <div class="recModList" *ngFor="let g of recipeDetails['grains']">
+    <div class="recModList" *ngFor="let g of selectedRecipe['grains']">
       {{ g['quantity'] }} lb {{ g['name'] }}
     </div>
     <h3 class="recModal">Hops:</h3>
-    <div class="recModList" *ngFor="let k of recipeDetails['hops'] | keyvalue">
+    <div class="recModList" *ngFor="let k of selectedRecipe['hops'] | keyvalue">
       {{ k.value['quantity'] }} oz {{ k.value['name'] }}
     </div>
     <p></p>
     <h3 class="recModal">Instructions: </h3>
-    {{ recipeDetails['instructions'] }}
+    {{ selectedRecipe['instructions'] }}
     <p></p>
     <div class="options">
-      <button pButton label="Delete" (click)="deleteRecipe(recipeDetails['_id']['$oid'])"></button>
-      <button pButton label="New Batch" (click)="newBatch(recipeDetails['_id']['$oid'])"></button>
+      <button pButton label="Close" (click)="recipeSelected=!recipeSelected"></button>
+      <button pButton label="Edit" (click)="editRecipe()"></button>
+      <button pButton label="Delete" (click)="deleteRecipe(selectedRecipe['_id']['$oid'])"></button>
+      <button pButton label="New Batch" (click)="newBatch(selectedRecipe['_id']['$oid'])"></button>
     </div>
+  </div>
+  <div class="description" *ngIf="edit">
+    <h3 class="recModal">Name: </h3>
+    <input type="text" [(ngModel)]="selectedRecipe['title']">
+    <p></p>
+    <h3 class="recModal">Description: </h3>
+    <input type="text" [(ngModel)]="selectedRecipe['description']">
+    <p></p>
+    <h3 class="recModal">Target Gravity: </h3>
+    <input type="text" [(ngModel)]="selectedRecipe['OG']">
+    <p></p>
+    <h3 class="recModal">Instructions: </h3>
+    <textarea rows="10" cols="30" [(ngModel)]="selectedRecipe['instructions']"></textarea>
+    <p></p>
+
+    <h3 (click)="grainModal=!grainModal">Grains <i class="pi pi-plus" title="Add"></i></h3>
+    <span *ngFor="let c of selectedRecipe['grains']">
+      <p>{{c.name}} <input type="number" style="width:4em" [(ngModel)]="c.quantity"></p>
+ </span>
+    <h3 (click)="hopModal=!hopModal">Hops <i class="pi pi-plus" title="Add"></i></h3>
+    <span *ngFor="let c of selectedRecipe['hops']">
+      <p>{{c.name}}<input type="number" style="width:4em" [(ngModel)]="c.quantity"></p>
+ </span>
+    <h3 (click)="yeastModal=!yeastModal">Yeast <i class="pi pi-plus" title="Add"></i></h3>
+    <span *ngFor="let c of selectedRecipe['yeast']">
+      <p>{{c.name}}<input type="text" style="width:4em" [(ngModel)]="c.quantity"></p>
+</span>
+    <button pButton label="Update" (click)="updateRecipe()"></button>
+    <button pButton label="Cancel" (click)="edit=!edit"></button>
   </div>
 </p-dialog>
 

@@ -7,9 +7,9 @@ import { DataService } from './services/data.service';
 })
 export class AppComponent {
   title = 'brewtool';
-  display = false;  
+  display = false;
 
-  constructor(private d: DataService){
+  constructor(private d: DataService) {
     this.d.getIngredients();
   }
 

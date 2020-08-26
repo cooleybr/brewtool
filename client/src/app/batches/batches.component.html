@@ -20,7 +20,7 @@
                         <th>Date</th>
                         <th>Name</th>
                         <th>OG</th>
-                        <th>Notes</th>
+                        <th>Quality</th>
                         <th>Actions</th>
                     </tr>
                 </ng-template>
@@ -29,7 +29,7 @@
                         <td>{{batch.date}}</td>
                         <td>{{batch.name}}</td>
                         <td>{{batch.OG}}</td>
-                        <td>{{batch.notes}}</td>
+                        <td>{{batch.quality}}</td>
                         <td style="text-align: center;">
                             <i class="pi pi-eye" title="View" style="font-size: 1.25rem" (click)="viewBatch(batch['_id']['$oid'],false)"></i>
                             <i class="pi pi-copy" title="Copy" style="font-size: 1.25rem" (click)="viewBatch(batch['_id']['$oid'],true)"></i>
@@ -63,10 +63,15 @@
         <p>Size: <input type="text" [(ngModel)]="this.batchDetails['size']"></p>
         <p>OG: <input type="text" [(ngModel)]="this.batchDetails['OG']"></p>
         <p>Notes: <input type="textarea" rows="10" cols="35" [(ngModel)]="this.batchDetails['notes']"></p>
+        <p>Quality:<select [(ngModel)]="this.batchDetails['quality']"><option *ngFor="let q of quality">{{q}}</option></select></p>
     </div>
-    <div class="options" *ngIf="edit">
-        <button pButton label="Save" (click)="saveBatch()"></button>
+    <div class="options" *ngIf="clone">
+        <button pButton label="Save as New" (click)="saveBatch()"></button>
     </div>
+    <div class="options" *ngIf="!clone">
+        <button pButton label="Update Existing" (click)="updateBatch()"></button>
+    </div>
+
 
 </p-dialog>
 

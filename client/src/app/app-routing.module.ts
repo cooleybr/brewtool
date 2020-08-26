@@ -7,13 +7,13 @@ import { MetricsComponent } from './metrics/metrics.component';
 
 
 const routes: Routes = [
-  { path: '', component: HomeComponent }, 
+  { path: '', component: HomeComponent },
   { path: 'recipes', component: RecipeComponent },
   { path: 'batches', component: BatchesComponent },
   { path: 'batches/:id', component: BatchesComponent },
   { path: 'metrics', component: MetricsComponent },
   { path: 'metrics/:id', component: MetricsComponent }
- ];
+];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

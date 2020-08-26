@@ -1,0 +1,11 @@
+.links {
+    display: inline-block;
+    width:100%;
+    background-color:black;
+}
+
+button {
+    margin-left:1em;
+    background-color: black;
+    border: 0px;
+}

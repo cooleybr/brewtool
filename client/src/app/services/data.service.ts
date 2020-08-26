@@ -23,17 +23,17 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   getRecipes() {
-     this.http.get(this.url + 'getRecipes').subscribe(x => {
+    this.http.get(this.url + 'getRecipes').subscribe(x => {
       this.recipes = x as Recipe[];
     });
     return this.http.get(this.url + 'getRecipes');
   }
 
-  getIngredients(){
+  getIngredients() {
     this.http.get(this.url + 'getIngredients').subscribe(x => {
       this.ingredients = x as any;
-      for(const g of this.ingredients['grains']){
-        let grain = new Grain();
+      for (const g of this.ingredients['grains']) {
+        const grain = new Grain();
         grain.id = g[0];
         grain.name = g[1];
         grain.maltster = g[2];
@@ -44,8 +44,8 @@ export class DataService {
         grain.diastatic = g[7];
         this.grains.push(grain);
       }
-      for(const h of this.ingredients['hops']){
-        let hop = new Hop();
+      for (const h of this.ingredients['hops']) {
+        const hop = new Hop();
         hop.id = h[0];
         hop.name = h[1];
         hop.origin = h[2];
@@ -54,8 +54,8 @@ export class DataService {
         hop.description = h[5];
         this.hops.push(hop);
       }
-      for(const y of this.ingredients['yeasts']){
-        let yeast = new Yeast();
+      for (const y of this.ingredients['yeasts']) {
+        const yeast = new Yeast();
         yeast.id = y[0];
         yeast.name = y[1];
         yeast.manufacturer = y[2];
@@ -69,57 +69,54 @@ export class DataService {
 
     try {
       return this.http.get(this.url + 'getIngredients');
-    }
-    catch (e) {
+    } catch (e) {
       return of({});
     }
   }
 
-  getYeasts(){
+  getYeasts() {
     return this.yeasts;
   }
 
-  getHops(){
+  getHops() {
     return this.hops;
   }
 
-  getGrains(){
+  getGrains() {
     return this.grains;
   }
 
   getRecipe(id) {
-    for(const r of this.recipes){
-      if(r['_id']['$oid']==id){
+    for (const r of this.recipes) {
+      if (r['_id']['$oid'] === id) {
         return r;
       }
     }
   }
 
   addRecipe(recipe) {
-    return this.http.post(this.url + 'addRecipe', recipe)
+    return this.http.post(this.url + 'addRecipe', recipe);
+  }
+
+  updateRecipe(id, data) {
+    return this.http.post(this.url + 'updateRecipe?id=' + id, data);
   }
 
   deleteRecipe(id) {
     return this.http.get(this.url + 'deleteRecipe?id=' + id);
   }
 
-  deleteBatch(id) {
-    return this.http.get(this.url + 'deleteBatch?id=' + id);
-  }
-
   getBatches() {
     this.http.get(this.url + 'getBatches').subscribe(x => {
-      for (let r of Object.keys(x)) {
-        this.batches[x[r]['id']] = x[r];
+      for (const r of Object.keys(x)) {
+        this.batches[x[r]['_id']['$oid']] = x[r];
       }
     });
     try {
       return this.http.get(this.url + 'getBatches');
-    }
-    catch (e) {
+    } catch (e) {
       return of([]);
     }
-
   }
 
   getBatch(id) {
@@ -130,12 +127,20 @@ export class DataService {
     return this.http.post(this.url + 'addBatch', batch);
   }
 
-  getMetrics(){
+  updateBatch(id, data) {
+    return this.http.post(this.url + 'updateBatch?id=' + id, data);
+  }
+
+  deleteBatch(id) {
+    return this.http.get(this.url + 'deleteBatch?id=' + id);
+  }
+
+  getMetrics() {
     return this.http.get(this.url + 'getMetrics');
   }
 
-  putMetrics(id,data){
-    let datas = {id:id,data:data};
+  putMetrics(id, data) {
+    const datas = { id: id, data: data };
     return this.http.post(this.url + 'putMetrics', datas);
   }
 }

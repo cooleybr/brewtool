@@ -1,10 +1,11 @@
 import { Recipe } from './recipe.model';
 
 export class Batch {
-   name: string = '';
-   OG: number = 1.042;
-   size: number = 5;
-   notes: string = '';
-   recipe: string = '';
-   date: string = '';
+   name = '';
+   OG = '1.042';
+   size = 5;
+   notes = '';
+   recipe = '';
+   date = '';
+   quality = '';
 }
