@@ -147,6 +147,19 @@ def deleteBatches():
       result = {'status':'failure'}
     return(jsonify(result))
 
+@flasky.route('/deleteMetrics', methods=['GET'])
+def deleteMetrics():
+    db = getCon()
+    id = request.args.get('id')
+    payload = {'_id': ObjectId(id) }
+    try:
+      #mysqldb.deleteBatch(id)
+      db.metrics.delete_one(payload)
+      result = {'status':'success'}
+    except:
+      result = {'status':'failure'}
+    return(jsonify(result))
+
 @flasky.route('/putMetrics', methods=['POST'])
 def putMetrics():
   db = getCon()
@@ -166,16 +179,6 @@ def getMetrics():
   except:
     print('failed to get recipes')
   return (dumps(data))
-
-@flasky.route('/deleteMetrics', methods=['GET'])
-def deleteMetrics():
-    db = getCon()
-    try:
-      metrics.delete_many({})
-      result = {'status':'success'}
-    except:
-      result = {'status':'failure'}
-    return(jsonify(result))
 
 #if __name__=='__main__':
 #  app.run(host='0.0.0.0')

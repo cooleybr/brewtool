@@ -14,7 +14,15 @@
             </select>        </p-header>
   
            <h3>Batches</h3>
-                <p-table [value]="batches" [autoLayout]="true">
+                <p-table #bt [value]="batches" [autoLayout]="true" [paginator]="true" [rows]="5" [globalFilterFields]="['date','name','quality']">
+                    <ng-template pTemplate="caption">
+                        <div class="table-header">
+                  Search Batches          <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="bt.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                            </span>
+                        </div>
+                    </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Date</th>

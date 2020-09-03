@@ -7,7 +7,15 @@
       </p-header>
       <div class="table">
         <h3>Recipes</h3>
-        <p-table [value]="recipes">
+        <p-table #rt [value]="recipes" [paginator]="true" [rows]="5" [globalFilterFields]="['title','description']">
+          <ng-template pTemplate="caption">
+            <div class="table-header">
+      Search Recipes          <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="rt.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                </span>
+            </div>
+        </ng-template>
           <ng-template pTemplate="header">
             <tr>
               <th colspan="1">Title</th>
@@ -37,6 +45,7 @@
         </h3>
       </div>
       <p></p>
+      <!--
       <div class="p-grid">
         <div class="p-col-4">
           <div class="table">
@@ -60,7 +69,7 @@
           </div>
         </div>
       </div>
-
+    -->
 
 
       <p-footer>

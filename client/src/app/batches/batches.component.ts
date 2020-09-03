@@ -103,7 +103,6 @@ export class BatchesComponent implements OnInit {
   }
 
   myUploader(event) {
-    console.log(event);
     this.file = event.files[0];
     this.showFile();
   }

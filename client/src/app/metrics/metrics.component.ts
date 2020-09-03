@@ -28,6 +28,8 @@ export class MetricsComponent implements OnInit {
   searchData = 'Select';
   searchOption = 'Select';
   queries = [];
+  fg = 2.000;
+  abv = 5;
 
   constructor(private route: ActivatedRoute, private dServ: DataService) {
 
@@ -66,7 +68,7 @@ export class MetricsComponent implements OnInit {
                       label: 'Temperature',
                       data: this.singleTemp,
                       fill: false,
-                      borderColor: '#565656'
+                      borderColor: '#ff0000'
                     }
                   ]
                 }
@@ -80,6 +82,7 @@ export class MetricsComponent implements OnInit {
   }
 
   parseData(datas: string) {
+    this.fg=2;
     let start = datas.split("\n");
     for (let r of start) {
       if (r.includes('Timestamp')) {
@@ -92,10 +95,14 @@ export class MetricsComponent implements OnInit {
         this.singleTimestamp.push(vals[0]);
         this.singleSG.push(vals[1]);
         this.singleTemp.push(vals[2])
+        if((parseFloat(vals[1])!==NaN)&&(parseFloat(vals[1])<this.fg)){
+          this.fg=parseFloat(vals[1]);
+        }
       }
     }
+    this.abv = (parseFloat(this.selectedBatch.OG) - this.fg)*131.25;
 
-
+    console.log(this.abv.toFixed(2));
   }
 
   setData() {
@@ -216,6 +223,7 @@ export class MetricsComponent implements OnInit {
         if (b.name === this.searchOption) {
           for (let m of this.metrics) {
             if (m.id === b['_id']['$oid']) {
+              console.log(m.id);
               this.parseData(m.data);
               this.sgData = {
                 labels: this.singleTimestamp,
@@ -235,7 +243,7 @@ export class MetricsComponent implements OnInit {
                     label: 'Temperature',
                     data: this.singleTemp,
                     fill: false,
-                    borderColor: '#565656'
+                    borderColor: '#ff0000'
                   }
                 ]
               }

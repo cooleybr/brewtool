@@ -84,7 +84,6 @@ export class RecipeComponent {
 
   saveRecipe() {
     delete this.selectedRecipe['_id'];
-    console.log(this.selectedRecipe);
     this.d.addRecipe(this.selectedRecipe).subscribe(x => this.getRecipes());
     this.recipeModal = !this.recipeModal;
   }
