@@ -2,10 +2,17 @@ version: "3"
 
 services:
   api:
-    image: brewtool_api
-    #build: api/.
+    #image: brewtool_api
+    build: api/.
     ports:
       - "5000:5000"
+    restart: always
+  client:
+    #image: brewtool_client
+    build: client/.
+    ports: 
+      - "8080:80"
+    restart: always
 #  postgres:
 #    image: postgres
 #    restart: always
